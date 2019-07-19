@@ -20,6 +20,12 @@ You must log in to access the customer support site.<br /><br />
     Password<br />
     <input type="password" name="password" /><br /><br />
     <input type="submit" value="Log In" />
+    <p style="color:blue;">Login with:</p>
+
+    Nicholas/1<br>
+    Sarah/12<br>
+    Mike/123<br>
+    John/1234<br>
 </form>
 </body>
 </html>

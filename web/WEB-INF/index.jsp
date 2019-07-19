@@ -1,2 +1,2 @@
 <%@ page session="false" %>
-<c:redirect url="/courses?action=" />
+<c:redirect url="/login" />

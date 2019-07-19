@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
             return;
         }
         else if(session.getAttribute("username") != null) {
-            response.sendRedirect("tickets");
+            response.sendRedirect("courses");
             return;
         }
 
@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if(session.getAttribute("username") != null) {
-            response.sendRedirect("tickets");
+            response.sendRedirect("courses");
             return;
         }
 
@@ -55,7 +55,7 @@ public class LoginServlet extends HttpServlet {
         else {
             session.setAttribute("username", username);
             request.changeSessionId();
-            response.sendRedirect("tickets");
+            response.sendRedirect("courses");
         }
     }
 }
