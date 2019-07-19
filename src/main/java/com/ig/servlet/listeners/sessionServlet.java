@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @WebListener
-public class sessionServlet implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
+public class sessionServlet implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener, HttpSessionIdListener {
 
     private SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyyy HH:mm::ss");
 
@@ -43,11 +43,14 @@ public class sessionServlet implements ServletContextListener, HttpSessionListen
     // -------------------------------------------------------
     public void sessionCreated(HttpSessionEvent se) {
         /* Session is created. */
-        System.out.println();
+        System.out.println(this.date() + ": Session " + se.getSession().getId() + " created.");
+        SessionRegistry.addSession(se.getSession());
     }
 
     public void sessionDestroyed(HttpSessionEvent se) {
         /* Session is destroyed. */
+        System.out.println(this.date() + ": Session " + se.getSession().getId() + " created.");
+        SessionRegistry.removeSession(se.getSession());
     }
 
     // -------------------------------------------------------
@@ -70,5 +73,11 @@ public class sessionServlet implements ServletContextListener, HttpSessionListen
       /* This method is invoked when an attibute
          is replaced in a session.
       */
+    }
+
+    @Override
+    public void sessionIdChanged(HttpSessionEvent e, String s) {
+        System.out.println(this.date() + ": Session ID " + s + " changed to " + e.getSession().getId());
+        SessionRegistry.updateSessionId(e.getSession(), s);
     }
 }
