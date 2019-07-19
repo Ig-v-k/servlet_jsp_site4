@@ -30,7 +30,7 @@
 %><br /><br /><%
     }
 %>
-<a href="<c:url value="/courses" />">Return to list course</a>
+<a href="<c:url value="/courses" />">Return to list course</a><br>
 <a href="<c:url value="/courses" />">Add student</a>
 </body>
 </html>
