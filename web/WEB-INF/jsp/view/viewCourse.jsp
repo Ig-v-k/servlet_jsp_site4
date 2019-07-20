@@ -21,16 +21,20 @@
     {
         if(i++ > 0)
             out.print(", ");
-%><a href="<c:url value="/courses">
-                        <c:param name="action" value="download" />
-                        <c:param name="courseId" value="<%= courseId %>" />
-                        <c:param name="student" value="<%= a.getName() %>" />
-                    </c:url>"><%= a.getName() %></a><%
+        %><%--<a href="<c:url value="/courses">
+                                <c:param name="action" value="download" />
+                                <c:param name="courseId" value="<%= courseId %>" />
+                                <c:param name="student" value="<%= a.getName() %>" />
+                            </c:url>">--%><%= a.getName() %>
+        <%
     }
 %><br /><br /><%
     }
 %>
-<a href="<c:url value="/courses" />">Return to list course</a><br>
-<a href="<c:url value="/courses" />">Add student</a>
+<a href="<c:url value="/courses"/>">Return to list course</a><br>
+<a href="<c:url value="/courses">
+    <c:param name="action" value="addStudent"/>
+    <c:param name="courseId" value="<%= courseId %>"/>
+</c:url>">Add student</a>
 </body>
 </html>

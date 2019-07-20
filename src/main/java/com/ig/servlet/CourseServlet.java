@@ -19,14 +19,20 @@ import java.util.Map;
 public class CourseServlet extends javax.servlet.http.HttpServlet {
     private volatile int COURSE_ID_SEQUENCE = 1;
     private Map<Integer, Course> courseDatabase = new LinkedHashMap<>();
+    private String localId;
+    private Course coursee = null;
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if(action == null)
             action = "list";
-        switch(action)
-        {
+        switch(action) {
+            case "addStudent":
+                localId = request.getParameter("courseId");
+                coursee = getcourse(localId);
+                this.addStudentForm(request, response);
+                break;
             case "create":
                 this.showCourseForm(request, response);
                 break;
@@ -42,19 +48,21 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
                 break;
         }
     }
+
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException
-    {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
         String action = request.getParameter("action");
         if(action == null)
             action = "list";
-        switch(action)
-        {
+        switch(action) {
             case "create":
 //                System.out.println(request.getParameter("courseName"));
 //                System.out.println(request.getParameter("professor"));
 //                System.out.println(request.getParameter("student\n"));
                 this.createCourse(request, response);
+                break;
+            case "addStudent":
+                this.addStudent(request, response);
                 break;
             case "list":
             default:
@@ -62,12 +70,22 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
                 break;
         }
     }
-    private void showCourseForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+
+    private void addStudentForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("/WEB-INF/jsp/view/addStudentForm.jsp").forward(request, response);
+    }
+
+    private void addStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Student s = new Student((String) request.getAttribute("studname"));
+        if(!(s.getName().equals("")))
+            coursee.addStudent(s);
+        response.sendRedirect("courses?action=view&courseId" + localId);
+//        request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
+    }
+    private void showCourseForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/jsp/view/courseForm.jsp").forward(request, response);
     }
-    private void viewCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void viewCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idString = request.getParameter("courseId");
         Course course = this.getcourse(idString, response);
         if(course == null)
@@ -76,8 +94,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         request.setAttribute("course", course);
         request.getRequestDispatcher("/WEB-INF/jsp/view/viewCourse.jsp").forward(request, response);
     }
-    private void downloadStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void downloadStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idString = request.getParameter("courseId");
         Course course = this.getcourse(idString, response);
         if(course == null)
@@ -97,12 +114,11 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         response.setHeader("Content-Disposition", "Student; filename=" + Student.getName());
         response.setContentType("application/octet-stream");
     }
-    private void listCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
-    {
+    private void listCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("courseDatabase", this.courseDatabase);
         request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
     }
-    private void createCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
+    private void createCourse(HttpServletRequest request, HttpServletResponse response) throws IOException
     {
 
 //        System.out.println(request.getParameter("courseName"));
@@ -110,10 +126,9 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
 //        System.out.println(request.getParameter("student\n"));
 
         Course course = new Course();
-        Student student = new Student();
+        Student student = new Student(request.getParameter("student"));
         course.setName(request.getParameter("courseName"));
         course.setProfessorName(request.getParameter("professor"));
-        student.setName(request.getParameter("student"));
 
 //        System.out.println(course.getName());
 //        System.out.println(course.getProfessorName());
@@ -123,32 +138,30 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
             course.addStudent(student);
         }
         int id;
-        synchronized(this)
-        {
+        synchronized(this) {
             id = this.COURSE_ID_SEQUENCE++;
             this.courseDatabase.put(id, course);
         }
         response.sendRedirect("courses?action=view&courseId=" + id);
     }
-    private Course getcourse(String idString, HttpServletResponse response) throws ServletException, IOException
-    {
-        if(idString == null || idString.length() == 0)
-        {
+    private Course getcourse(String idString) {
+        Course course = this.courseDatabase.get(Integer.parseInt(idString));
+        return course;
+    }
+    private Course getcourse(String idString, HttpServletResponse response) throws IOException {
+        if(idString == null || idString.length() == 0) {
             response.sendRedirect("courses");
             return null;
         }
-        try
-        {
+        try {
             Course course = this.courseDatabase.get(Integer.parseInt(idString));
-            if(course == null)
-            {
+            if(course == null) {
                 response.sendRedirect("courses");
                 return null;
             }
             return course;
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             response.sendRedirect("courses");
             return null;
         }
