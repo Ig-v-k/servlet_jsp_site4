@@ -20,7 +20,6 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
     private volatile int COURSE_ID_SEQUENCE = 1;
     private Map<Integer, Course> courseDatabase = new LinkedHashMap<>();
     private String localId;
-    private Course coursee = null;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -30,7 +29,6 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         switch(action) {
             case "addStudent":
                 localId = request.getParameter("courseId");
-                coursee = getcourse(localId);
                 this.addStudentForm(request, response);
                 break;
             case "create":
@@ -62,6 +60,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
                 this.createCourse(request, response);
                 break;
             case "addStudent":
+                System.out.println("--- ПРИШЛО В POST ---");
                 this.addStudent(request, response);
                 break;
             case "list":
@@ -76,10 +75,13 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
     }
 
     private void addStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        System.out.println("START - addStudent");
         Student s = new Student((String) request.getAttribute("studname"));
-        if(!(s.getName().equals("")))
-            coursee.addStudent(s);
+        System.out.println("SAVE: Student s = new Student(...)");
+        this.courseDatabase.get(Integer.parseInt(localId)).addStudentt(s);
+        System.out.println("this.courseDatabase.get(...)");
         response.sendRedirect("courses?action=view&courseId" + localId);
+        System.out.println("response");
 //        request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
     }
     private void showCourseForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -87,7 +89,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
     }
     private void viewCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idString = request.getParameter("courseId");
-        Course course = this.getcourse(idString, response);
+        Course course = this.getcourseOfMap(idString, response);
         if(course == null)
             return;
         request.setAttribute("courseId", idString);
@@ -96,7 +98,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
     }
     private void downloadStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String idString = request.getParameter("courseId");
-        Course course = this.getcourse(idString, response);
+        Course course = this.getcourseOfMap(idString, response);
         if(course == null)
             return;
         String name = request.getParameter("student");
@@ -135,7 +137,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
 //        System.out.println(student.getName());
 
         if(!(student.getName().equals(""))) { // <--- NPE <--- courseForm.jsp - courseName(customerName):11 // <--- NPE
-            course.addStudent(student);
+            course.addStudentt(student);
         }
         int id;
         synchronized(this) {
@@ -144,11 +146,10 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         }
         response.sendRedirect("courses?action=view&courseId=" + id);
     }
-    private Course getcourse(String idString) {
-        Course course = this.courseDatabase.get(Integer.parseInt(idString));
-        return course;
+    private Map<Integer, Course> getMapcourse(String idString) {
+        return this.courseDatabase;
     }
-    private Course getcourse(String idString, HttpServletResponse response) throws IOException {
+    private Course getcourseOfMap(String idString, HttpServletResponse response) throws IOException {
         if(idString == null || idString.length() == 0) {
             response.sendRedirect("courses");
             return null;

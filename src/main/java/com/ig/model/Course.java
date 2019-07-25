@@ -15,7 +15,7 @@ public class Course {
     public Collection<Student> getStudent() {
         return this.students.values();
     }
-    public void addStudent(Student student) {
+    public void addStudentt(Student student) {
         this.students.put(student.getName(), student);
     }
     public int getNumberOfStudent() {

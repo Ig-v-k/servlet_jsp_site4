@@ -31,8 +31,8 @@
 %><br /><br /><%
     }
 %>
-<a href="<c:url value="/courses"/>">Return to list course</a><br>
-<a href="<c:url value="/courses">
+<a href="<c:url value="courses"/>">Return to list course</a><br>
+<a href="<c:url value="courses">
     <c:param name="action" value="addStudent"/>
     <c:param name="courseId" value="<%= courseId %>"/>
 </c:url>">Add student</a>
