@@ -15,20 +15,20 @@
 <%
     if(course.getNumberOfStudent() > 0)
     {
-%>Students: <%
-    int i = 0;
-    for(Student a : course.getStudent())
-    {
-        if(i++ > 0)
-            out.print(", ");
-        %><%--<a href="<c:url value="/courses">
-                                <c:param name="action" value="download" />
-                                <c:param name="courseId" value="<%= courseId %>" />
-                                <c:param name="student" value="<%= a.getName() %>" />
-                            </c:url>">--%><%= a.getName() %>
-        <%
-    }
-%><br /><br /><%
+        %>Students: <%
+            int i = 0;
+            for(Student a : course.getStudent())
+            {
+                if(i++ > 0)
+                    out.print(", ");
+                %><%--<a href="<c:url value="/courses">
+                                        <c:param name="action" value="download" />
+                                        <c:param name="courseId" value="<%= courseId %>" />
+                                        <c:param name="student" value="<%= a.getName() %>" />
+                                    </c:url>">--%><%= a.getName() %>
+                <%
+            }
+        %><br /><br /><%
     }
 %>
 <a href="<c:url value="courses"/>">Return to list course</a><br>

@@ -8,9 +8,7 @@
 <h2>Add student</h2>
 <form method="POST" action="courses?action=addStudent">
     Student name:<br/>
-    <label>
-        <input type="text" name="studname">
-    </label><br/><br/>
+    <input type="text" name="studname"><br/><br/>
     <input type="submit" value="Submit"/>
 </form>
 </body>

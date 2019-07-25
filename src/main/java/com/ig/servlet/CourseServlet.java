@@ -60,7 +60,6 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
                 this.createCourse(request, response);
                 break;
             case "addStudent":
-                System.out.println("--- ПРИШЛО В POST ---");
                 this.addStudent(request, response);
                 break;
             case "list":
@@ -74,14 +73,10 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         request.getRequestDispatcher("/WEB-INF/jsp/view/addStudentForm.jsp").forward(request, response);
     }
 
-    private void addStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("START - addStudent");
-        Student s = new Student((String) request.getAttribute("studname"));
-        System.out.println("SAVE: Student s = new Student(...)");
+    private void addStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Student s = new Student(request.getParameter("studname"));
         this.courseDatabase.get(Integer.parseInt(localId)).addStudentt(s);
-        System.out.println("this.courseDatabase.get(...)");
         response.sendRedirect("courses?action=view&courseId" + localId);
-        System.out.println("response");
 //        request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
     }
     private void showCourseForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -145,9 +140,6 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
             this.courseDatabase.put(id, course);
         }
         response.sendRedirect("courses?action=view&courseId=" + id);
-    }
-    private Map<Integer, Course> getMapcourse(String idString) {
-        return this.courseDatabase;
     }
     private Course getcourseOfMap(String idString, HttpServletResponse response) throws IOException {
         if(idString == null || idString.length() == 0) {
