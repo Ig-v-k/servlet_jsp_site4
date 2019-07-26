@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class Course {
+    private String userName = null;
     private String name = null;
     private Professor professor = new Professor();
     private Map<String, Student> students = new LinkedHashMap<>();
@@ -38,5 +39,13 @@ public class Course {
     }
     public String getProfessorName() {
         return this.professor.getName();
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

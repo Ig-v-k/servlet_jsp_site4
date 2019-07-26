@@ -8,16 +8,16 @@ import java.util.Map;
 
 public final class SessionRegistry {
     private static final Map<String, HttpSession> SESSIONS = new Hashtable<>();
-    public static void addSession(HttpSession session) {
+    static void addSession(HttpSession session) {
         SESSIONS.put(session.getId(), session);
     }
-    public static void updateSessionId(HttpSession session, String oldSessionId) {
+    static void updateSessionId(HttpSession session, String oldSessionId) {
         synchronized (SESSIONS) {
             SESSIONS.remove(oldSessionId);
             addSession(session);
         }
     }
-    public static void removeSession(HttpSession session) {
+    static void removeSession(HttpSession session) {
         SESSIONS.remove(session.getId());
     }
     public static List<HttpSession> getAllSession() {

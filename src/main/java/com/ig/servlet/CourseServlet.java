@@ -23,6 +23,10 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(request.getSession().getAttribute("username") == null) {
+            response.sendRedirect("login");
+            return;
+        }
         String action = request.getParameter("action");
         if(action == null)
             action = "list";
@@ -49,6 +53,10 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        if(request.getSession().getAttribute("username") == null) {
+            response.sendRedirect("login");
+            return;
+        }
         String action = request.getParameter("action");
         if(action == null)
             action = "list";
@@ -123,6 +131,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
 //        System.out.println(request.getParameter("student\n"));
 
         Course course = new Course();
+        course.setUserName((String)request.getSession().getAttribute("username"));
         Student student = new Student(request.getParameter("student"));
         course.setName(request.getParameter("courseName"));
         course.setProfessorName(request.getParameter("professor"));
