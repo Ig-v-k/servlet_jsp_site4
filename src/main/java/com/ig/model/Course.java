@@ -1,5 +1,7 @@
 package com.ig.model;
 
+import sun.security.jca.GetInstance;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,6 +10,7 @@ public class Course {
     private String userName = null;
     private String name = null;
     private Professor professor = new Professor();
+    private GetInstance.Instance dateFormat;
     private Map<String, Student> students = new LinkedHashMap<>();
 
     public Student getStudent(String name) {
@@ -47,5 +50,13 @@ public class Course {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public GetInstance.Instance getDateFormat() {
+        return dateFormat;
+    }
+
+    public void setDateFormat(GetInstance.Instance dateFormat) {
+        this.dateFormat = dateFormat;
     }
 }

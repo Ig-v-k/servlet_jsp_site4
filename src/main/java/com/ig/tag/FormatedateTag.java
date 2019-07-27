@@ -32,7 +32,7 @@ public class FormatedateTag extends TagSupport {
 
     static {
         try {
-            GET_LOCALE_METHOD = SetLocaleSupport.class.getDeclaredMethod("getFormattingLocale", PageContext.class, Tag.class, boolean.class,boolean.class);
+            GET_LOCALE_METHOD = SetLocaleSupport.class.getDeclaredMethod("getFormattingLocale", PageContext.class);
             GET_LOCALE_METHOD.setAccessible(true);
             GET_TIME_ZONE_METHOD = TimeZoneSupport.class.getDeclaredMethod("getTimeZone", PageContext.class, Tag.class);
             GET_TIME_ZONE_METHOD.setAccessible(true);
@@ -43,14 +43,14 @@ public class FormatedateTag extends TagSupport {
 
     protected Object value;
     protected Type type;
-    protected Style dateStyle;
-    protected Style timeStyle;
-    protected boolean timeFirst;
-    protected String separateDateTimeWith;
-    protected String pattern;
-    protected TimeZone timeZone;
-    protected String var;
-    protected int scope;
+    private Style dateStyle;
+    private Style timeStyle;
+    private boolean timeFirst;
+    private String separateDateTimeWith;
+    private String pattern;
+    private TimeZone timeZone;
+    private String var;
+    private int scope;
 
     public FormatedateTag() {
         super();
@@ -174,7 +174,7 @@ public class FormatedateTag extends TagSupport {
 
     private Locale getLocale() throws JspTagException {
         try {
-            return (Locale)GET_LOCALE_METHOD.invoke(null, this.pageContext, this, true, true);
+            return (Locale)GET_LOCALE_METHOD.invoke(null,this.pageContext); /*null, this.pageContext, this, true, true*/
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new JspTagException(e.toString(), e);
         }
