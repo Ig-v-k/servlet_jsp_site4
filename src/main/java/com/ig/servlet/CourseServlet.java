@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 @WebServlet(
             name = "qwe",
@@ -17,16 +20,15 @@ import java.util.Map;
             loadOnStartup = 1
 )
 public class CourseServlet extends javax.servlet.http.HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(CourseServlet.class.getName());
+//    private static final Logger log = LogManager.getLogManager().getLogger(CourseServlet.class.getName());
     private volatile int COURSE_ID_SEQUENCE = 1;
     private Map<Integer, Course> courseDatabase = new LinkedHashMap<>();
     private String localId;
-
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession().getAttribute("username") == null) {
-            response.sendRedirect("login");
-            return;
-        }
+        LOGGER.log(Level.SEVERE, "GET request received.");
+//        log.info("GET request received.");
         String action = request.getParameter("action");
         if(action == null)
             action = "list";
@@ -50,9 +52,10 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
                 break;
         }
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        LOGGER.log(Level.SEVERE, "POST request received.");
+//        log.info("POST request received.");
         if(request.getSession().getAttribute("username") == null) {
             response.sendRedirect("login");
             return;
@@ -76,13 +79,12 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
                 break;
         }
     }
-
     private void addStudentForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/jsp/view/addStudentForm.jsp").forward(request, response);
     }
-
     private void addStudent(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Student s = new Student(request.getParameter("studname"));
+        LOGGER.log(Level.SEVERE, "Object(Student) ---> ", s);
         this.courseDatabase.get(Integer.parseInt(localId)).addStudentt(s);
         response.sendRedirect("courses?action=view&courseId" + localId);
 //        request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
@@ -92,6 +94,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
     }
     private void viewCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idString = request.getParameter("courseId");
+        LOGGER.log(Level.SEVERE, "idString ---> ", idString);
         Course course = this.getcourseOfMap(idString, response);
         if(course == null)
             return;
@@ -105,14 +108,12 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         if(course == null)
             return;
         String name = request.getParameter("student");
-        if(name == null)
-        {
+        if(name == null) {
             response.sendRedirect("courses?action=view&courseId=" + idString);
             return;
         }
         Student Student = course.getStudent(name);
-        if(Student == null)
-        {
+        if(Student == null) {
             response.sendRedirect("courses?action=view&courseId=" + idString);
             return;
         }
@@ -123,8 +124,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         request.setAttribute("courseDatabase", this.courseDatabase);
         request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
     }
-    private void createCourse(HttpServletRequest request, HttpServletResponse response) throws IOException
-    {
+    private void createCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 //        System.out.println(request.getParameter("courseName"));
 //        System.out.println(request.getParameter("professor"));

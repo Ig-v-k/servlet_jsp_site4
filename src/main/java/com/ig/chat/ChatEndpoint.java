@@ -6,16 +6,13 @@ import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import javax.websocket.CloseReason;
 import javax.websocket.EncodeException;
-import javax.websocket.HandshakeResponse;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
-import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import javax.websocket.server.ServerEndpointConfig;
 import java.io.File;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -23,13 +20,18 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
-@ServerEndpoint(value = "/chat/{sessionId}",
+@ServerEndpoint(
+        value = "/chat/{sessionId}",
         encoders = ChatMessageCodec.class,
         decoders = ChatMessageCodec.class,
-        configurator = ChatEndpoint.EndpointConfigurator.class)
+        configurator = EndpointConfigurator.class
+)
 @WebListener
 public class ChatEndpoint implements HttpSessionListener {
+    private final Logger log = LogManager.getLogManager().getLogger(this.getClass().getName());
     private static final String HTTP_SESSION_PROPERTY = "com.ig.ws.HTTP_SESSION";
     private static final String WS_SESSION_PROPERTY = "com.ig.http.WS_SESSION";
     private static long sessionIdSequence = 1L;
@@ -38,10 +40,14 @@ public class ChatEndpoint implements HttpSessionListener {
     private static final Map<Session, ChatSession> sessions = new Hashtable<>();
     private static final Map<Session, HttpSession> httpSessions = new Hashtable<>();
     public static final List<ChatSession> pendingSessions = new ArrayList<>();
+
+/*    static String getSessionProperty(int i) {
+        return i == 1 ? HTTP_SESSION_PROPERTY : (i == 2 ? WS_SESSION_PROPERTY : null);
+    }*/
+
     @OnOpen
     public void onOpen(Session session, @PathParam("sessionId") long sessionId) {
-        HttpSession httpSession = (HttpSession)session.getUserProperties()
-                .get(ChatEndpoint.HTTP_SESSION_PROPERTY);
+        HttpSession httpSession = (HttpSession)session.getUserProperties().get(ChatEndpoint.HTTP_SESSION_PROPERTY);
         try {
             if(httpSession == null || httpSession.getAttribute("username") == null) {
                 session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY, "You are not logged in!"));
@@ -74,8 +80,7 @@ public class ChatEndpoint implements HttpSessionListener {
                 chatSession.setRepresentative(session);
                 chatSession.setRepresentativeUsername(username);
                 ChatEndpoint.pendingSessions.remove(chatSession);
-                session.getBasicRemote()
-                        .sendObject(chatSession.getCreationMessage());
+                session.getBasicRemote().sendObject(chatSession.getCreationMessage());
                 session.getBasicRemote().sendObject(message);
             }
             ChatEndpoint.sessions.put(session, chatSession);
@@ -150,14 +155,21 @@ public class ChatEndpoint implements HttpSessionListener {
             message.setType(ChatMessage.Type.LEFT);
             message.setTimestamp(OffsetDateTime.now());
             message.setContent(message.getUser() + " logged out.");
-            for(Session session:new ArrayList<>(this.getSessionsFor(httpSession))) {
-                try (session) {
+            for(Session session : new ArrayList<>(this.getSessionsFor(httpSession))) {
+                try {
                     session.getBasicRemote().sendObject(message);
                     Session other = this.close(session, message);
-                    if (other != null)
+                    if(other != null)
                         other.close();
-                } catch (IOException | EncodeException e) {
+                }
+                catch(IOException | EncodeException e) {
                     e.printStackTrace();
+                }
+                finally {
+                    try {
+                        session.close();
+                    }
+                    catch(IOException ignore) { }
                 }
             }
         }
@@ -211,13 +223,5 @@ public class ChatEndpoint implements HttpSessionListener {
     }
     private Session getOtherSession(ChatSession c, Session s) {
         return c == null ? null : (s == c.getCustomer() ? c.getRepresentative() : c.getCustomer());
-    }
-    static class EndpointConfigurator
-            extends ServerEndpointConfig.Configurator {
-        @Override
-        public void modifyHandshake(ServerEndpointConfig config, HandshakeRequest request, HandshakeResponse response) {
-            super.modifyHandshake(config, request, response);
-            config.getUserProperties().putChatEndpoint.HTTP_SESSION_PROPERTY, request.getHttpSession());
-        }
     }
 }
