@@ -8,6 +8,11 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
+<!--    <context-param>
+        <param-name>com.sun.faces.expressionFactory</param-name>
+        <param-value>com.sun.el.ExpressionFactoryImpl</param-value>
+    </context-param>-->
+
     <jsp-config>
         <jsp-property-group>
             <url-pattern>*.jsp</url-pattern>
@@ -27,6 +32,4 @@
         </cookie-config>
         <tracking-mode>COOKIE</tracking-mode>
     </session-config>
-
-    <distributable />
 </web-app>
