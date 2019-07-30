@@ -12,7 +12,7 @@ public final class SessionRegistry {
         SESSIONS.put(session.getId(), session);
     }
     static void updateSessionId(HttpSession session, String oldSessionId) {
-        synchronized (SESSIONS) {
+        synchronized(SESSIONS) {
             SESSIONS.remove(oldSessionId);
             addSession(session);
         }
@@ -20,10 +20,11 @@ public final class SessionRegistry {
     static void removeSession(HttpSession session) {
         SESSIONS.remove(session.getId());
     }
-    public static List<HttpSession> getAllSession() {
+    public static List<HttpSession> getAllSessions() {
         return new ArrayList<>(SESSIONS.values());
     }
-    public static int getNumberOfSession() {
+    public static int getNumberOfSessions() {
         return SESSIONS.size();
     }
+    private SessionRegistry() { }
 }

@@ -17,12 +17,9 @@ public class SessionListServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException { }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession().getAttribute("username") == null) {
-            response.sendRedirect("login");
-            return;
-        }
-        request.setAttribute("numberOfSessions", SessionRegistry.getNumberOfSession());
-        request.setAttribute("sessionList", SessionRegistry.getAllSession());
+        request.setAttribute("timestamp", System.currentTimeMillis());
+        request.setAttribute("numberOfSessions", SessionRegistry.getNumberOfSessions());
+        request.setAttribute("sessionList", SessionRegistry.getAllSessions());
         request.getRequestDispatcher("/WEB-INF/jsp/view/sessions.jsp").forward(request, response);
     }
 }
