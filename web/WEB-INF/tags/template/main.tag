@@ -3,7 +3,8 @@
 <%@ attribute name="bodyTitle" type="java.lang.String" rtexprvalue="true" required="true" %>
 <%@ attribute name="headContent" fragment="true" required="false" %>
 <%@ attribute name="navigationContent" fragment="true" required="true" %>
-<%@ include file="/WEB-INF/jsp/base.jspf" %>
+<%@ include file="/WEB-INF/jsp/base.jspf"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,7 @@
     <jsp:invoke fragment="headContent" />
 </head>
 <body>
-<h1>Multinational Widget Corporation</h1>
+    <h1>Multinational Widget Corporation</h1>
 <table border="0" id="bodyTable">
     <tbody>
     <tr>

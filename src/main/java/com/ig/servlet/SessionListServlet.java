@@ -20,6 +20,6 @@ public class SessionListServlet extends HttpServlet {
         request.setAttribute("timestamp", System.currentTimeMillis());
         request.setAttribute("numberOfSessions", SessionRegistry.getNumberOfSessions());
         request.setAttribute("sessionList", SessionRegistry.getAllSessions());
-        request.getRequestDispatcher("/WEB-INF/jsp/view/sessions.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/jsp/view/session.jsp").forward(request, response);
     }
 }

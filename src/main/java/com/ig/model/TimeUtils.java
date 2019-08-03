@@ -1,9 +1,7 @@
 package com.ig.model;
 
-public final class TimeUtils
-{
-    public static String intervalToString(long timeInterval)
-    {
+public final class TimeUtils {
+    public static String intervalToString(long timeInterval) {
         if(timeInterval < 1_000)
             return "less than one second";
         if(timeInterval < 60_000)

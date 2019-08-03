@@ -19,13 +19,13 @@ public class Course {
     public Collection<Student> getStudent() {
         return this.students.values();
     }
-    public void addStudentt(Student student) {
+    public void addStudentToCourse(Student student) {
         this.students.put(student.getName(), student);
     }
     public int getNumberOfStudent() {
         return this.students.size();
     }
-    public String getName() {
+    public String getNameCourse() {
         return name;
     }
     public void setName(String name) {
