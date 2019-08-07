@@ -13,6 +13,9 @@ public class Course {
     private GetInstance.Instance dateFormat;
     private Map<String, Student> students = new LinkedHashMap<>();
 
+    public boolean isTrueName(String a) {
+        return students.containsKey(a);
+    }
     public Student getStudent(String name) {
         return this.students.get(name);
     }
@@ -58,5 +61,10 @@ public class Course {
 
     public void setDateFormat(GetInstance.Instance dateFormat) {
         this.dateFormat = dateFormat;
+    }
+
+    @Override
+    public String toString() {
+        return "name : " + name;
     }
 }

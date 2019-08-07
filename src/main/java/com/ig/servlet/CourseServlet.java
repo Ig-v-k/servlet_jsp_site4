@@ -23,6 +23,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
     private volatile int COURSE_ID_SEQUENCE = 1;
     private Map<Integer, Course> courseDatabase = new LinkedHashMap<>();
     private String localId;
+    private Integer i = 1;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("GET request received.");
@@ -88,19 +89,18 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         request.getRequestDispatcher("/WEB-INF/jsp/view/addStudentForm.jsp").forward(request, response);
     }
     private void addStudent(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        log.info("------- addStudent -------");
-        log.info("Attribute ---> studname ---> ", request.getAttribute("studname"));
-        log.info("Parameter ---> studname ---> ", request.getParameter("studname"));
-//        String studname = request.getParameter("studname");
-//        String studnameOfDatabase = this.courseDatabase.get(Integer.parseInt(localId)).getStudent(studname).getName();
-//        log.info("addStudent method ---> studnameOfDatabase ---> ", studnameOfDatabase);
-//        if(studname.equalsIgnoreCase(studnameOfDatabase)) {
-//            request.setAttribute("nameFailed", true);
-//            addStudentForm(request, response);
-//        }
-//        Student s = new Student(studname);
-//        this.courseDatabase.get(Integer.parseInt(localId)).addStudentToCourse(s);
-//        response.sendRedirect("courses?action=view&courseId=" + localId);
+        log.debug("-- start debug --");
+        log.info("---: " + i++ + " :---");
+        log.info("studname ---> " + request.getParameter("studname"));
+        String studname = request.getParameter("studname");
+        log.info("isTrueName --> " + this.courseDatabase.get(Integer.parseInt(localId)).isTrueName(studname));
+        if(this.courseDatabase.get(Integer.parseInt(localId)).isTrueName(studname)) {
+            request.setAttribute("nameFailed", true);
+            addStudentForm(request, response);
+        }
+        Student student = new Student(studname);
+        this.courseDatabase.get(Integer.parseInt(localId)).addStudentToCourse(student);
+        response.sendRedirect("courses?action=view&courseId=" + localId);
 //        request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
     }
     private void showCourseForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -142,6 +142,7 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         log.debug("List courses.");
         request.setAttribute("courseDatabase", this.courseDatabase);
         request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
+        log.info("courseDatabse ---> " + this.courseDatabase);
     }
     private void createCourse(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
