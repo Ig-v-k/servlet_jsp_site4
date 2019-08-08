@@ -89,8 +89,9 @@ public class CourseServlet extends javax.servlet.http.HttpServlet {
         request.getRequestDispatcher("/WEB-INF/jsp/view/addStudentForm.jsp").forward(request, response);
     }
     private void addStudent(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        int ii = this.i;
         log.debug("-- start debug --");
-        log.info("---: " + i++ + " :---");
+        log.info("---: " + ii++ + " :---");
         log.info("studname ---> " + request.getParameter("studname"));
         String studname = request.getParameter("studname");
         log.info("isTrueName --> " + this.courseDatabase.get(Integer.parseInt(localId)).isTrueName(studname));

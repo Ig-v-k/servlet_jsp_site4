@@ -17,7 +17,7 @@
                             <c:param name="action" value="deleteCourse"/>
                             <c:param name="courseId" value="${entry.key}"/>
                          </c:url>">
-                         Remove course - <c:out value="${entry.value.nameCourse}"/>
+                         Remove
                 </a><br/><br/><br/>
             </c:forEach>
         </c:otherwise>

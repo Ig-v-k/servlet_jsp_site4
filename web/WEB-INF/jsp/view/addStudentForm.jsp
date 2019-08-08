@@ -9,7 +9,7 @@
                                 </c:url>">
         Student name:<br/>
         <input type="text" name="studname">
-        <c:if test="${nameFailed}">
+        <br/><c:if test="${nameFailed}">
             <b>A student with that name already exists.</b><br/><br/>
         </c:if>
         <input type="submit" value="Submit"/><br/>
