@@ -3,9 +3,9 @@ package com.ig.model;
 import java.util.*;
 
 public class SecurityConfigUSER_ROLE {
-    private static final String SECURITY_ROLE_USER_STUDENT = "STUDENT";
-    private static final String SECURITY_ROLE_USER_EMPLOYEE = "EMPLOYEE";
-    private static final String SECURITY_ROLE_USER_MANAGER = "MANAGER";
+    public static final String SECURITY_ROLE_USER_STUDENT = "STUDENT";
+    public static final String SECURITY_ROLE_USER_EMPLOYEE = "EMPLOYEE";
+    public static final String SECURITY_ROLE_USER_MANAGER = "MANAGER";
 
     private static final Map<String, List<String>> mapConfig = new HashMap<String, List<String>>();
     static {

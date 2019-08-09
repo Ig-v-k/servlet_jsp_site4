@@ -8,10 +8,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(
-        name = "Servlet_EMPLOYEE",
-        urlPatterns = "/employee"
+        name = "Servlet_MANAGER",
+        urlPatterns = "/manager"
         )
-public class ServletROLE_EMPLOYEE extends HttpServlet {
+public class ServletROLE_MANAGER extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
     }

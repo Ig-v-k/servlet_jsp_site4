@@ -22,10 +22,8 @@ public class LoggingFilter implements Filter {
             ThreadContext.put("id", UUID.randomUUID().toString());
             HttpSession session = ((HttpServletRequest)request).getSession(false);
             if(session != null)
-                ThreadContext.put("username",
-                        (String)session.getAttribute("username"));
+                ThreadContext.put("username", (String)session.getAttribute("username"));
         }
-
         try {
             chain.doFilter(request, response);
         } finally {
