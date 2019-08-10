@@ -11,7 +11,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.util.EnumSet;
 
-
 @WebListener()
 public class Configuration implements ServletContextListener{
 
@@ -31,7 +30,7 @@ public class Configuration implements ServletContextListener{
         FilterRegistration.Dynamic registration = context.addFilter("loggingFilter", new LoggingFilter());
         registration.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST, DispatcherType.INCLUDE, DispatcherType.FORWARD, DispatcherType.ERROR), false, "/*");
         registration = context.addFilter("authenticationFilter", new AuthenticationFilter());
-        registration.addMappingForUrlPatterns(null, false, "/courses", "/chat", "/sessions");
+        registration.addMappingForUrlPatterns(null, false, "/login", "/courses", "/chat", "/sessions", "/student", "/employee", "/manager");
     }
 
     public void contextDestroyed(ServletContextEvent sce) {

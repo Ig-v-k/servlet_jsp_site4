@@ -1,5 +1,7 @@
 package com.ig.servlet.filters;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
 import javax.servlet.Filter;
@@ -14,13 +16,16 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class LoggingFilter implements Filter {
+    private static final Logger log = LogManager.getLogger();
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        log.info("log:: LoggingFilter ---> doFilter()");
         boolean clear = false;
         if(!ThreadContext.containsKey("id")) {
             clear = true;
             ThreadContext.put("id", UUID.randomUUID().toString());
-            HttpSession session = ((HttpServletRequest)request).getSession(false);
+            HttpSession session = ((HttpServletRequest)request).getSession();
             if(session != null)
                 ThreadContext.put("username", (String)session.getAttribute("username"));
         }

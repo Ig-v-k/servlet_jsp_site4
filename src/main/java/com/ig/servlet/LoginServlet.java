@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Objects;
 
 @WebServlet(
         name = "loginServlet",
@@ -19,7 +18,6 @@ import java.util.Objects;
 )
 public class LoginServlet extends HttpServlet {
     private static final Logger log = LogManager.getLogger();
-    private static UserAccount a;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
@@ -42,15 +40,18 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.info("log:: --- doPost() ---");
         HttpSession session = request.getSession();
+/*
         if(session.getAttribute("username") != null) {
             response.sendRedirect("courses");
             return;
         }
+*/
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        UserAccount user = DBdao.findUser(username, password);
+        AppUtils.storeLoginedUser(request.getSession(), user);
         int uid = Integer.parseInt(request.getParameter("uid"));
-        if(!(uid == 1 || uid == 2 || uid == 3) || username == null || password == null || !Objects.requireNonNull(DBdao.findUser(username, password)).getUserName().contains(username) || !password.equals(Objects.requireNonNull(DBdao.findUser(username, password)).getUserName())) {
-            log.info("log:: if()");
+        if(!(uid == 1 || uid == 2 || uid == 3) || username == null || password == null || !DBdao.get_MAP_User_RoleDatabase().get(username).getUserName().contains(username) || !password.equals(DBdao.get_MAP_User_RoleDatabase().get(username).getPassword())) {
             log.warn("log:: Login failed for user: {}", username);
             request.setAttribute("loginFailed", true);
             request.setAttribute("db", DBdao.get_MAP_User_RoleDatabase());
@@ -64,8 +65,21 @@ public class LoginServlet extends HttpServlet {
             }
             log.info("log:: User: {} successfully logged in.", username);
             session.setAttribute("username", username);
+            session.setAttribute("uid", uid);
             request.getRequestedSessionId();
-            response.sendRedirect("courses");
+            int redirectId = -1;
+            try {
+                redirectId = Integer.parseInt(request.getParameter("redirectId"));
+            }
+            catch (Exception e) {
+            }
+            String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
+            if (requestUri != null) {
+                response.sendRedirect(requestUri);
+            }
+            else {
+                response.sendRedirect(request.getContextPath());
+            }
         }
     }
 }

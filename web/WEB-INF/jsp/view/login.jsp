@@ -50,19 +50,24 @@
             <p style="color:blue;">Login with:</p>
 
             <c:forEach items="${db}" var="i">
-                Login: ${i.key} => Password: ${i.value.password} => UID: ${i.value.uid}<br/>
+                <p id="rand" onclick="random_color1()">Login: ${i.key} => Password: ${i.value.password} => UID: ${i.value.uid}</p>
             </c:forEach>
         </fieldset>
     </form>
 <script>
-    function random_bg_color() {
+    function random_color1() {
         var x = Math.floor(Math.random() * 256);
         var y = Math.floor(Math.random() * 256);
         var z = Math.floor(Math.random() * 256);
         var bgColor = "rgb(" + x + "," + y + "," + z + ")";
         console.log(bgColor);
 
-        document.body.style.background = bgColor;
+        document.getElementById("rand").style.color = bgColor;
     }
+/*
+    function random_color2() {
+        document.getElementById("rand").style.color = Math.floor(Math.random()*16777215).toString(16);
+    }
+*/
 </script>
 </template:loggedOut>

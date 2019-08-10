@@ -13,17 +13,17 @@ public class SessionListener implements HttpSessionListener, HttpSessionIdListen
     private static final Logger log = LogManager.getLogger();
     @Override
     public void sessionCreated(HttpSessionEvent e) {
-        log.debug("Session " + e.getSession().getId() + " created.");
+        log.debug("log:: Session " + e.getSession().getId() + " created.");
         SessionRegistry.addSession(e.getSession());
     }
     @Override
     public void sessionDestroyed(HttpSessionEvent e) {
-        log.debug("Session " + e.getSession().getId() + " destroyed.");
+        log.debug("log:: Session " + e.getSession().getId() + " destroyed.");
         SessionRegistry.removeSession(e.getSession());
     }
     @Override
     public void sessionIdChanged(HttpSessionEvent e, String oldSessionId) {
-        log.debug("Session ID " + oldSessionId + " changed to " + e.getSession().getId());
+        log.debug("log:: Session ID " + oldSessionId + " changed to " + e.getSession().getId());
         SessionRegistry.updateSessionId(e.getSession(), oldSessionId);
     }
 }
