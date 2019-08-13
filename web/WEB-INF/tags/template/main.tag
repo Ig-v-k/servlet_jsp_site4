@@ -17,7 +17,7 @@
 <div id="loader"></div>
 <div style="display:none;" id="myDiv" class="animate-bottom">
     <table border="0" id="bodyTable">
-        <h1>Multinational Widget Corporation</h1><br/><br/>
+        <h1>Multinational Widget Corporation</h1><span style="color:red">[ ${loginedUser.userName} ]</span><br/><br/>
         <tbody>
         <tr>
             <td class="sidebarCell">

@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         }
         request.setAttribute("loginFailed", false);
         request.setAttribute("uidloginFailed", false);
-        request.setAttribute("db", DBdao.get_MAP_User_RoleDatabase());
+        request.setAttribute("db", DBdao.get_MAP_User_Database());
         request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -48,37 +48,53 @@ public class LoginServlet extends HttpServlet {
 */
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String uid = request.getParameter("uid");
         UserAccount user = DBdao.findUser(username, password);
-        AppUtils.storeLoginedUser(request.getSession(), user);
-        int uid = Integer.parseInt(request.getParameter("uid"));
-        if(!(uid == 1 || uid == 2 || uid == 3) || username == null || password == null || !DBdao.get_MAP_User_RoleDatabase().get(username).getUserName().contains(username) || !password.equals(DBdao.get_MAP_User_RoleDatabase().get(username).getPassword())) {
-            log.warn("log:: Login failed for user: {}", username);
-            request.setAttribute("loginFailed", true);
-            request.setAttribute("db", DBdao.get_MAP_User_RoleDatabase());
+        if(uid.equals("") || username.equals("") || password.equals("")) {
+            log.warn("log:: Login failed for user: {} - {} - {}", username, password, uid);
+            request.setAttribute("loginFailedEmpty", true);
+            request.setAttribute("db", DBdao.get_MAP_User_Database());
             request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
         }
         else {
-            if(DBdao.get_MAP_User_RoleDatabase().get(username).getUid() != uid) {
-                log.warn("log:: : UID : failed for user: {}", username);
-                request.setAttribute("uidloginFailed", true);
+            if(!DBdao.get_MAP_User_Database().get(username).getUserName().contains(username)) {
+                log.warn("log:: : username : failed for user: {}", username);
+                request.setAttribute("loginFailed", true);
+                request.setAttribute("db", DBdao.get_MAP_User_Database());
                 request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
             }
-            log.info("log:: User: {} successfully logged in.", username);
+            else if(!password.equals(DBdao.get_MAP_User_Database().get(username).getPassword())) {
+                log.warn("log:: : password : failed for user: {}", username);
+                request.setAttribute("loginFailed", true);
+                request.setAttribute("db", DBdao.get_MAP_User_Database());
+                request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
+            }
+            else if(DBdao.get_MAP_User_Database().get(username).getUid() != Integer.parseInt(uid)) {
+                log.warn("log:: : uid : failed for user: {}", username);
+                request.setAttribute("uidloginFailed", true);
+                request.setAttribute("db", DBdao.get_MAP_User_Database());
+                request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
+            }
+            log.warn("log:: User: {} successfully logged in.", username);
+            AppUtils.storeLoginedUser(request.getSession(), user);
+            log.info("log:: session user ---> " + AppUtils.getLoginedUser(request.getSession()));
             session.setAttribute("username", username);
             session.setAttribute("uid", uid);
             request.getRequestedSessionId();
             int redirectId = -1;
             try {
-                redirectId = Integer.parseInt(request.getParameter("redirectId"));
+                log.info("redirectId ---> " + request.getParameter("redirectId"));
+//                redirectId = Integer.parseInt(request.getParameter("redirectId"));
             }
             catch (Exception e) {
+                log.info("log:: EXEPTION:" + e);
             }
             String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
             if (requestUri != null) {
                 response.sendRedirect(requestUri);
             }
             else {
-                response.sendRedirect(request.getContextPath());
+                response.sendRedirect("courses");
             }
         }
     }

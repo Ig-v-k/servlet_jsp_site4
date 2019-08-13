@@ -21,13 +21,30 @@
             again.</b><br/><br/>
         </div>
     </c:if>
+    <c:if test="${loginFailedEmpty}">
+        <div style="background:transparent url(/resourse/images/info_icon.jpg) no-repeat scroll 14px 13px;
+                    padding:2px 0 0 27px;
+                    color:#CC0000;
+                    font-size:14px;
+                    font-weight:bold;
+                    padding-bottom:7px;
+                    border:1px solid #D3D5C3;
+                    border-radius:5px 5px 5px 5px;
+                    margin-bottom:5px;
+                    padding:14px 20px 6px 48px;
+                    min-height:30px;
+                    max-width:600px;">
+            <b>Not be entered data</b><br/><br/>
+        </div>
+    </c:if>
     <form method="POST" action="<c:url value="/login" />">
+        <input type="hidden" name="redirectId" value="${param.redirectId}" />
         <fieldset>
             <legend>Log in service</legend>
             Username<br/>
-            <input type="text" name="username"/><br/><br/>
+            <input type="text" name="username" value="${user.userName}"/><br/><br/>
             Password<br/>
-            <input type="password" name="password"/><br/><br/>
+            <input type="password" name="password" value="${user.password}"/><br/><br/>
             UID<br/>
             <input type="text" name="uid"/><br/><br/>
             <c:if test="${uidloginFailed}">
@@ -43,7 +60,7 @@
                     padding:14px 20px 6px 48px;
                     min-height:30px;
                     max-width:600px;">
-                    <b>The username : uid : entered are not correct. Please try again.</b><br/><br/>
+                    <b>UID - entered are not correct. Please try again.</b><br/><br/>
                 </div>
             </c:if>
             <input type="submit" value="Log In"/>

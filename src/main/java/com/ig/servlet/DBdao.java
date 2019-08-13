@@ -27,7 +27,7 @@ class DBdao {
         }
         return null;
     }
-    static Map<String, UserAccount> get_MAP_User_RoleDatabase() {
+    static Map<String, UserAccount> get_MAP_User_Database() {
         return user_RoleDatabase;
     }
 }

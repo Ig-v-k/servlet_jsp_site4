@@ -20,16 +20,13 @@ public class SecurityConfigUSER_ROLE {
         List<String> urlPatterns3 = new ArrayList<String>();
 
         urlPatterns1.add("/student");
-        urlPatterns1.add("/course");
         urlPatterns1.add("/login");
 
         urlPatterns2.add("/employee");
-        urlPatterns2.add("/course");
         urlPatterns2.add("/session");
         urlPatterns2.add("/login");
 
         urlPatterns3.add("/manager");
-        urlPatterns3.add("/course");
         urlPatterns3.add("/session");
         urlPatterns3.add("/login");
 
