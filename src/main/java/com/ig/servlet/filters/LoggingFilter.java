@@ -20,7 +20,7 @@ public class LoggingFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.info("log:: LoggingFilter ---> doFilter()");
+        log.info("log:: doFilter()");
         boolean clear = false;
         if(!ThreadContext.containsKey("id")) {
             clear = true;

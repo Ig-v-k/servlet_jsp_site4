@@ -6,7 +6,7 @@ import com.ig.model.UserAccount;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class DBdao {
+public class DBdao {
     private static final Map<String, UserAccount> user_RoleDatabase = new LinkedHashMap<String, UserAccount>();
 
     static {
@@ -20,14 +20,14 @@ class DBdao {
         user_RoleDatabase.put(e.getUserName(), e);
         user_RoleDatabase.put(m.getUserName(), m);
     }
-    static UserAccount findUser(String userName, String password) {
+    public static UserAccount findUser(String userName, String password, int uid) {
         UserAccount u = user_RoleDatabase.get(userName);
-        if (u != null && u.getPassword().equals(password)) {
+        if (u != null && u.getPassword().equals(password) && u.getUid() == uid) {
             return u;
         }
         return null;
     }
-    static Map<String, UserAccount> get_MAP_User_Database() {
+    public static Map<String, UserAccount> get_MAP_User_Database() {
         return user_RoleDatabase;
     }
 }

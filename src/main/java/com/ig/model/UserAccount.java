@@ -39,4 +39,9 @@ public class UserAccount {
             this.roles.addAll(Arrays.asList(roles));
         }
     }
+
+    @Override
+    public String toString() {
+        return this.userName;
+    }
 }
