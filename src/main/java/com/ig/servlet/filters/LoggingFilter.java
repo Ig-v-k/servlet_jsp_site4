@@ -1,5 +1,7 @@
 package com.ig.servlet.filters;
 
+import com.ig.model.UserAccount;
+import com.ig.servlet.AppUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
@@ -22,18 +24,26 @@ public class LoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("log:: doFilter()");
         boolean clear = false;
+        log.info("log:: ThreadContext.containsKey(\"id\")" + ThreadContext.containsKey("id"));
         if(!ThreadContext.containsKey("id")) {
             clear = true;
             ThreadContext.put("id", UUID.randomUUID().toString());
             HttpSession session = ((HttpServletRequest)request).getSession();
-            if(session != null)
-                ThreadContext.put("username", (String)session.getAttribute("username"));
+            if(session != null) {
+                log.info("log:: ThreadContext.put()");
+                log.info("log:: username ---> " + session.getAttribute("username"));
+                ThreadContext.put("username", (String) session.getAttribute("username"));
+            }
         }
         try {
+            log.info("log:: try - chain.doFilter()");
             chain.doFilter(request, response);
-        } finally {
-            if(clear)
+        }
+        finally {
+            if(clear) {
+                log.info("log:: ThreadContext.clearAll()\n");
                 ThreadContext.clearAll();
+            }
         }
 
     }

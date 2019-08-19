@@ -24,39 +24,44 @@ public class AuthenticationFilter implements Filter {
         HttpSession session = ((HttpServletRequest)request).getSession();
         String servletPath = ((HttpServletRequest) request).getServletPath();
         if (servletPath.equals("/login")) {
+            log.info("log:: chain.doFilter()");
             chain.doFilter(request, response);
-            return;
         }
-        if(session == null || session.getAttribute("username") == null ||session.getAttribute("password") == null || session.getAttribute("uid") == null) {
-            ((HttpServletResponse)response).sendRedirect("login");
-        }
-        UserAccount loginedUser = AppUtils.getLoginedUser(((HttpServletRequest) request).getSession());
-        HttpServletRequest wrapRequest = ((HttpServletRequest) request);
-        log.info("log:: servletPath ---> " + servletPath);
-        log.info("log:: loginedUser ---> " + loginedUser);
-        if (loginedUser != null) {
-            String userName = loginedUser.getUserName();
-            List<String> roles = loginedUser.getRoles();
-            wrapRequest = new UserRoleRequestWrapper(userName, roles, ((HttpServletRequest) request));
-        }
-        log.info("log:: CheckROLE_URL.isSecurityPage() ---> " + CheckROLE_URL.isSecurityPage(((HttpServletRequest) request)));
-        if (CheckROLE_URL.isSecurityPage(((HttpServletRequest) request))) {
-            if (loginedUser == null) {
-                String requestUri = ((HttpServletRequest) request).getRequestURI();
-                int redirectId = AppUtils.storeRedirectAfterLoginUrl(((HttpServletRequest) request).getSession(), requestUri);
-                log.info("log:: response.sendRedirect(/login) ---> ");
-                ((HttpServletResponse) response).sendRedirect(wrapRequest.getContextPath() + "/login?redirectId=" + redirectId);
+        else {
+            if(session == null) {
+                log.info("log:: session=null - response.sendRedirect(login)");
+                ((HttpServletResponse)response).sendRedirect("login");
+                chain.doFilter(request, response);
+            }
+            else {
+                HttpServletRequest wrapRequest = ((HttpServletRequest) request);
+                log.info("log:: servletPath ---> " + servletPath);
+                log.info("log:: CheckROLE_URL.isSecurityPage() ---> " + CheckROLE_URL.isSecurityPage(((HttpServletRequest) request)));
+                if (CheckROLE_URL.isSecurityPage(((HttpServletRequest) request))) {
+                    UserAccount loginedUser = AppUtils.getLoginedUser(((HttpServletRequest) request).getSession());
+                    log.info("log:: loginedUser ---> " + loginedUser);
+                    if (loginedUser == null) {
+                        String requestUri = ((HttpServletRequest) request).getRequestURI();
+                        int redirectId = AppUtils.storeRedirectAfterLoginUrl(((HttpServletRequest) request).getSession(), requestUri);
+                        log.info("log:: response.sendRedirect(/login) ---> ");
+                        ((HttpServletResponse) response).sendRedirect(wrapRequest.getContextPath() + "/login?redirectId=" + redirectId);
+                        chain.doFilter(wrapRequest, response);
+                    }
+                    else {
+                        String userName = loginedUser.getUserName();
+                        List<String> roles = loginedUser.getRoles();
+                        wrapRequest = new UserRoleRequestWrapper(userName, roles, ((HttpServletRequest) request));
+                    }
+                    boolean hasPermission = CheckROLE_URL.hasPermission(wrapRequest);
+                    if (!hasPermission) {
+                        log.info("log:: response.sendRedirect(/course) ---> ");
+                        ((HttpServletResponse) response).sendRedirect("courses");
+                    }
+                }
+                log.info("log:: chain.doFilter()");
                 chain.doFilter(wrapRequest, response);
-                return;
-            }
-            boolean hasPermission = CheckROLE_URL.hasPermission(wrapRequest);
-            if (!hasPermission) {
-                log.info("log:: response.sendRedirect(/course) ---> ");
-                ((HttpServletResponse) response).sendRedirect("courses");
-                return;
             }
         }
-        chain.doFilter(wrapRequest, response);
     }
 
     @Override

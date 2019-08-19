@@ -91,11 +91,11 @@ public class LoginServlet extends HttpServlet {
         }
         String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
         if (requestUri != null) {
-            log.info("log:: sendRedirect(requestUri) ---> ");
+            log.info("log:: sendRedirect(requestUri)");
             response.sendRedirect(requestUri);
         }
         else {
-            log.info("log:: sendRedirect(courses) ---> ");
+            log.info("log:: sendRedirect(courses)");
             response.sendRedirect("courses");
         }
     }
