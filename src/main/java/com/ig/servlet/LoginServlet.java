@@ -21,34 +21,48 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
+        log.info("log:: --- doGet() --- ");
+        log.info("log:: doGet() --- session.getAttribute(\"username\") ---> " + session.getAttribute("username"));
         if(request.getParameter("logout") != null) {
-            if(log.isDebugEnabled())
+            if(log.isDebugEnabled()) {
                 log.debug("User {} logged out.", session.getAttribute("username"));
+            }
             session.invalidate();
             response.sendRedirect("login");
             return;
         }
         else if(session.getAttribute("username") != null) {
+            log.info("log:: doGet() --- response.sendRedirect(courses)");
             response.sendRedirect("courses");
             return;
         }
         request.setAttribute("loginFailed", false);
         request.setAttribute("uidloginFailed", false);
         request.setAttribute("db", DBdao.get_MAP_User_Database());
+        log.info("log:: request.getRequestDispatcher(.../login.jsp)");
         request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.info("log:: --- doPost() ---");
-//        HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String uid = request.getParameter("uid");
+        log.info("request.getParameter(\"username\") ---> " + request.getParameter("username"));
+        log.info("request.getParameter(\"password\") ---> " + request.getParameter("password"));
+        log.info("request.getParameter(\"uid\") ---> " + request.getParameter("uid"));
         UserAccount user = DBdao.findUser(username, password, Integer.parseInt(uid));
         if (user == null) {
             request.setAttribute("loginFailedEmpty", true);
             request.setAttribute("db", DBdao.get_MAP_User_Database());
+            log.info("log:: doPost() --- request.getRequestDispatcher(.../login.jsp)");
             request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
             return;
+        }
+        else {
+            log.info("log:: put UserAccount ---> AppUtils.storeLoginedUser()");
+            if(username.equals(DBdao.get_MAP_User_Database().get(username).getUserName()))
+                AppUtils.storeLoginedUser(session, DBdao.get_MAP_User_Database().get(username));
         }
 //        if(uid.equals("") || username.equals("") || password.equals("")) {
 //            log.warn("log:: Login failed for user: {} - {} - {}", username, password, uid);
@@ -96,7 +110,7 @@ public class LoginServlet extends HttpServlet {
         }
         else {
             log.info("log:: sendRedirect(courses)");
-            response.sendRedirect("courses");
+            response.sendRedirect(username);
         }
     }
 }

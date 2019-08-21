@@ -24,7 +24,7 @@ public class LoggingFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("log:: doFilter()");
         boolean clear = false;
-        log.info("log:: ThreadContext.containsKey(\"id\")" + ThreadContext.containsKey("id"));
+        log.info("log:: ThreadContext.containsKey(\"id\") ---> " + ThreadContext.containsKey("id"));
         if(!ThreadContext.containsKey("id")) {
             clear = true;
             ThreadContext.put("id", UUID.randomUUID().toString());

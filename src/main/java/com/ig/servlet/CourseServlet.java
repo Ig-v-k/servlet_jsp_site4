@@ -14,8 +14,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @WebServlet(
-            name = "qwe",
-            urlPatterns = {"/courses"},
+            name = "courses",
+            urlPatterns = {"/courses/*"},
             loadOnStartup = 1
 )
 public class CourseServlet extends javax.servlet.http.HttpServlet {
