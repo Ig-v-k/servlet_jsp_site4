@@ -13,7 +13,7 @@ import java.io.IOException;
         )
 public class ServletROLE_MANAGER extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        response.sendRedirect(request.getContextPath() + "/courses" + request.getServletPath());
     }
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

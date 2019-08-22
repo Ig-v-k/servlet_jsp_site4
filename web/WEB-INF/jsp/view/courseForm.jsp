@@ -1,5 +1,5 @@
 <template:basic htmlTitle="Create a Ticket" bodyTitle="Create a Ticket">
-    <form method="POST" action="courses">
+    <form method="POST" action="${pageContext.request.contextPath}/courses/">
         <input type="hidden" name="action" value="create"/>
         Course name:<br/>
         <input type="text" name="courseName"><br/><br/>

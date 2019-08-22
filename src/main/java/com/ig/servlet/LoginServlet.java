@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet {
     private static final Logger log = LogManager.getLogger();
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         log.info("log:: --- doGet() --- ");
         log.info("log:: doGet() --- session.getAttribute(\"username\") ---> " + session.getAttribute("username"));
         if(request.getParameter("logout") != null) {
@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
     }
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.info("log:: --- doPost() ---");
-        HttpSession session = request.getSession();
+        HttpSession session = request.getSession(false);
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String uid = request.getParameter("uid");

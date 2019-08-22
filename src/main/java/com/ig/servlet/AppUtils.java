@@ -11,7 +11,7 @@ public class AppUtils {
     private static final Map<Integer, String> id_uri_map = new HashMap<Integer, String>();
     private static final Map<String, Integer> uri_id_map = new HashMap<String, Integer>();
 
-    public static void storeLoginedUser(HttpSession session, UserAccount loginedUser) {
+    static void storeLoginedUser(HttpSession session, UserAccount loginedUser) {
         session.setAttribute("loginedUser", loginedUser);
     }
     public static UserAccount getLoginedUser(HttpSession session) {
@@ -27,11 +27,8 @@ public class AppUtils {
         }
         return id;
     }
-    public static String getRedirectAfterLoginUrl(HttpSession session, int redirectId) {
+    static String getRedirectAfterLoginUrl(HttpSession session, int redirectId) {
         String url = id_uri_map.get(redirectId);
-        if (url != null) {
-            return url;
-        }
-        return null;
+        return url;
     }
 }

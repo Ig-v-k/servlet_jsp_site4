@@ -20,10 +20,11 @@ public class AuthenticationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.info("log:: doFilter()");
         HttpSession session = ((HttpServletRequest)request).getSession();
         String servletPath = ((HttpServletRequest) request).getServletPath();
         HttpServletRequest wrapRequest = ((HttpServletRequest) request);
+
+        log.info("log:: doFilter()");
         log.info("log:: session ---> " + session);
         log.info("log:: servletPath ---> " + servletPath);
         log.info(servletPath.equals("/login") ? "log:: servletPath.equals(\"/login\") ---> true" : "log:: servletPath.equals(\"/login\") ---> false");
