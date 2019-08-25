@@ -1,8 +1,6 @@
 package com.ig.servlet;
 
-import com.ig.A.CourseStudentFunctionsImpl;
-import com.ig.model.Course;
-import com.ig.model.Student;
+import com.ig.I_A.A.Course_ROLE_FunctionsImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,22 +9,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @WebServlet(
             name = "courses",
             urlPatterns = {"/courses/*"},
             loadOnStartup = 1
 )
-class CourseServlet extends CourseStudentFunctionsImpl {
+class CourseServlet extends Course_ROLE_FunctionsImpl {
     private static final Logger log = LogManager.getLogger();
-    private volatile int COURSE_ID_SEQUENCE = 1;
-    private String localId;
-    private Integer i = 1;
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("GET request received.");
         String action = request.getParameter("action");
         if(action == null)
@@ -36,14 +29,14 @@ class CourseServlet extends CourseStudentFunctionsImpl {
                 this.deleteCourse(request, response);
                 break;
             case "addStudent":
-                localId = request.getParameter("courseId");
+                super.setLocalId(request.getParameter("courseId"));
                 this.addStudentForm(request, response);
                 break;
             case "create":
                 this.showCourseForm(request, response);
                 break;
             case "view":
-                this.viewCourse(request, response);
+                super.viewCourse(request, response);
                 break;
             case "download":
                 this.downloadStudent(request, response);
