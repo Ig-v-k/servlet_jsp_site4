@@ -1,10 +1,9 @@
 package com.ig.servlet.filters;
 
 import com.ig.model.UserAccount;
-import com.ig.servlet.AppUtils;
-import com.ig.servlet.CheckROLE_URL;
-import com.ig.servlet.DBdao;
-import com.ig.servlet.UserRoleRequestWrapper;
+import com.ig.Utils.AppUtils;
+import com.ig.Utils.CheckROLE_URL;
+import com.ig.Utils.UserRoleRequestWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,7 +68,10 @@ public class AuthenticationFilter implements Filter {
                 ((HttpServletResponse) response).sendRedirect("login");
             }
         }
-        chain.doFilter(wrapRequest, response);
+        /*
+        * after checking for /login, compilation does not stop, but gets to this place and the class repeats
+        */
+//        chain.doFilter(wrapRequest, response);
     }
 
     @Override

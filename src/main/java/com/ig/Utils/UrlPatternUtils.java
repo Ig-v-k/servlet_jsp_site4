@@ -1,4 +1,4 @@
-package com.ig.servlet;
+package com.ig.Utils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;

@@ -1,4 +1,4 @@
-package com.ig.servlet;
+package com.ig.Utils;
 
 import com.ig.model.UserAccount;
 
@@ -11,7 +11,7 @@ public class AppUtils {
     private static final Map<Integer, String> id_uri_map = new HashMap<Integer, String>();
     private static final Map<String, Integer> uri_id_map = new HashMap<String, Integer>();
 
-    static void storeLoginedUser(HttpSession session, UserAccount loginedUser) {
+    public static void storeLoginedUser(HttpSession session, UserAccount loginedUser) {
         session.setAttribute("loginedUser", loginedUser);
     }
     public static UserAccount getLoginedUser(HttpSession session) {
@@ -27,7 +27,7 @@ public class AppUtils {
         }
         return id;
     }
-    static String getRedirectAfterLoginUrl(HttpSession session, int redirectId) {
+    public static String getRedirectAfterLoginUrl(HttpSession session, int redirectId) {
         String url = id_uri_map.get(redirectId);
         return url;
     }

@@ -1,7 +1,5 @@
 package com.ig.servlet.filters;
 
-import com.ig.model.UserAccount;
-import com.ig.servlet.AppUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;

@@ -1,9 +1,8 @@
-package com.ig.I_A.A;
+package com.ig.Interface.Implements;
 
-import com.ig.I_A.Functions;
+import com.ig.DB.DBCourse;
 import com.ig.model.Course;
 import com.ig.model.Student;
-import com.ig.servlet.DBCourse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public abstract class Course_ROLE_FunctionsImpl implements Functions {
+public class ManagerImpl extends Functions_ImplManager {
     private static final Logger log = LogManager.getLogger();
     private Integer i = 1;
     private volatile int COURSE_ID_SEQUENCE = 1;
@@ -23,7 +22,6 @@ public abstract class Course_ROLE_FunctionsImpl implements Functions {
         DBCourse.getCourseDatabase().remove(Integer.parseInt(request.getParameter("courseId")));
         response.sendRedirect("courses?action=view&courseId" + request.getParameter("courseId"));
     }
-
     @Override
     public void addStudentForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Course course = DBCourse.getcourseOfMap(localId, response);
@@ -32,12 +30,10 @@ public abstract class Course_ROLE_FunctionsImpl implements Functions {
         request.setAttribute("courseDatabase", DBCourse.getCourseDatabase());
         request.getRequestDispatcher("/WEB-INF/jsp/view/addStudentForm.jsp").forward(request, response);
     }
-
     @Override
     public void showCourseForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/WEB-INF/jsp/view/courseForm.jsp").forward(request, response);
     }
-
     @Override
     public void downloadStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idString = request.getParameter("courseId");
@@ -60,7 +56,6 @@ public abstract class Course_ROLE_FunctionsImpl implements Functions {
         response.setContentType("application/octet-stream");
         log.exit();
     }
-
     @Override
     public void createCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.entry();
@@ -80,7 +75,6 @@ public abstract class Course_ROLE_FunctionsImpl implements Functions {
         response.sendRedirect("courses?action=view&courseId=" + id);
         log.exit();
     }
-
     @Override
     public void addStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int ii = this.i;
@@ -98,7 +92,6 @@ public abstract class Course_ROLE_FunctionsImpl implements Functions {
         response.sendRedirect("courses?action=view&courseId=" + localId);
         request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
     }
-
     @Override
     public void listCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.debug("List courses.");
@@ -118,9 +111,6 @@ public abstract class Course_ROLE_FunctionsImpl implements Functions {
         request.getRequestDispatcher("/WEB-INF/jsp/view/viewCourse.jsp").forward(request, response);
         log.exit();
     }
-    protected abstract void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
-    protected abstract void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException;
-
     public void setLocalId(String localId) {
         this.localId = localId;
     }

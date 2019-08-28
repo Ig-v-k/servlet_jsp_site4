@@ -1,5 +1,6 @@
 <%--@elvariable id="courseId" type="java.lang.String"--%>
 <%--@elvariable id="course" type="com.ig.model.Course"--%>
+<%--@elvariable id="username" type="java.lang.String"--%>
 
 <template:basic htmlTitle="${course.nameCourse}" bodyTitle="Course #${courseId}: ${course.nameCourse}">
     <i>User - <c:out value="${course.userName}" /><br />
@@ -9,7 +10,6 @@
         Students: ${course.student.size()}
         <c:forEach items="${course.student}" var="students" varStatus="status">
             <i><c:out value="${students.name}"/>,</i>
-
             <%--<a href="<c:url value="/course">
                     <c:param name="action" value="download" />
                     <c:param name="courseId" value="${courseId}" />
@@ -17,7 +17,7 @@
                 </c:url>"><c:out value="${course.studentName}" /></a>--%>
         </c:forEach><br /><br />
     </c:if>
-    <a href="<c:url value="/courses">
+    <a href="<c:url value="${pageContext.request.contextPath}/course/${pageContext.session.getAttribute(username)}">
                 <c:param name="action" value="addStudent"/>
                 <c:param name="courseId" value="${courseId}"/>
                 </c:url>">Add student</a>

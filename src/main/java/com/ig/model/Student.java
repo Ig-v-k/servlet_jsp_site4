@@ -1,9 +1,5 @@
 package com.ig.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class Student {
     private String name;
     private Integer age;

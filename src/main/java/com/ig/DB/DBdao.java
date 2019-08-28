@@ -1,4 +1,4 @@
-package com.ig.servlet;
+package com.ig.DB;
 
 import com.ig.model.SecurityConfigUSER_ROLE;
 import com.ig.model.UserAccount;

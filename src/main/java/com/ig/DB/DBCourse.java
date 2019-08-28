@@ -1,4 +1,4 @@
-package com.ig.servlet;
+package com.ig.DB;
 
 import com.ig.model.Course;
 import org.apache.logging.log4j.LogManager;
