@@ -70,6 +70,7 @@ public class EmployeeImpl extends Functions_ImplEmployee {
     }
     @Override
     public void listCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("log:: --- employee:listCourse() ---");
         log.debug("List courses.");
         request.setAttribute("courseDatabase", DBCourse.getCourseDatabase());
         request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);

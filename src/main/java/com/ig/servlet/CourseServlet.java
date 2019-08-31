@@ -15,23 +15,24 @@ import java.io.IOException;
 @WebServlet(
             name = "courses",
             urlPatterns = {"/courses/*"},
-            loadOnStartup = 1
+            loadOnStartup = 3
 )
 public class CourseServlet extends HttpServlet {
     private static final Logger log = LogManager.getLogger();
-    private static SwitchCheck switcheck = null;
     private HttpSession session = null;
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("log:: --- doGet() ---");
         log.debug("GET request received.");
         session = request.getSession(false);
-        session.setAttribute("path", request.getServletPath());
+        session.setAttribute("path", request.getPathInfo());
         session.setAttribute("action", request.getParameter("action"));
-        new SwitchCheck(session, request, response);
+        SwitchCheck.checkk(session, request, response);
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+        log.info("log:: --- doPost() ---");
         log.debug("POST request received.");
         if(request.getSession().getAttribute("username") == null) {
             response.sendRedirect("login");

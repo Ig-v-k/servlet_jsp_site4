@@ -3,6 +3,8 @@ package com.ig.Utils;
 import com.ig.Interface.Implements.EmployeeImpl;
 import com.ig.Interface.Implements.ManagerImpl;
 import com.ig.Interface.Implements.StudentImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,16 +13,17 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class SwitchCheck {
+    private static final Logger log = LogManager.getLogger();
     private static StudentImpl studentImpl = new StudentImpl();
     private static EmployeeImpl employeeImpl = new EmployeeImpl();
     private static ManagerImpl managerImpl = new ManagerImpl();
 
-    public SwitchCheck(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
-        init(session, request, response);
-    }
-    private static void init(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    public static void checkk(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+        log.info("log:: --- checkk() ---");
         String action = (String) session.getAttribute("action");
         String path = (String) session.getAttribute("path");
+        log.info("log:: action ---> " + action);
+        log.info("log:: path ---> " + path);
         if(action == null)
             action = "list";
         try {
@@ -29,8 +32,9 @@ public class SwitchCheck {
                     case "view":
                         studentImpl.viewCourse(request, response);
                         break;
+                    case "list":
                     default:
-                        studentImpl.listCourse(request, response);
+                        studentImpl.listCourse(session, request, response);
                         break;
                 }
             }

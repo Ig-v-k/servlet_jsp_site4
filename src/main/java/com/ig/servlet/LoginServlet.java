@@ -16,7 +16,8 @@ import java.io.IOException;
 
 @WebServlet(
         name = "loginServlet",
-        urlPatterns = "/login"
+        urlPatterns = "/login",
+        loadOnStartup = 1
 )
 public class LoginServlet extends HttpServlet {
     private static final Logger log = LogManager.getLogger();
@@ -63,8 +64,9 @@ public class LoginServlet extends HttpServlet {
         }
         else {
             log.info("log:: put UserAccount ---> AppUtils.storeLoginedUser()");
-            if(username.equals(DBdao.get_MAP_User_Database().get(username).getUserName()))
+            if(username.equals(DBdao.get_MAP_User_Database().get(username).getUserName())) {
                 AppUtils.storeLoginedUser(session, DBdao.get_MAP_User_Database().get(username));
+            }
         }
 //        if(uid.equals("") || username.equals("") || password.equals("")) {
 //            log.warn("log:: Login failed for user: {} - {} - {}", username, password, uid);
@@ -106,13 +108,14 @@ public class LoginServlet extends HttpServlet {
             log.info("log:: EXEPTION:" + e);
         }
         String requestUri = AppUtils.getRedirectAfterLoginUrl(request.getSession(), redirectId);
+        log.info("log:: requestUri ---> " + requestUri);
         if (requestUri != null) {
             log.info("log:: sendRedirect(requestUri)");
             response.sendRedirect(requestUri);
         }
         else {
-            log.info("log:: sendRedirect(courses)");
-            response.sendRedirect(username);
+            log.info("log:: sendRedirect(username)");
+            response.sendRedirect(request.getContextPath() + "/courses/" + username);
         }
     }
 }

@@ -8,7 +8,7 @@
         </c:when>
         <c:otherwise>
             <c:forEach items="${courseDatabase}" var="entry">
-                Course ${entry.key}: <a href="<c:url value="${pageContext.request.contextPath}/course/${pageContext.session.getAttribute(username)}">
+                Course ${entry.key}: <a href="<c:url value="/course/${loginedUser.userName}">
                                                 <c:param name="action" value="view" />
                                                 <c:param name="courseId" value="${entry.key}" />
                                               </c:url>"><c:out value="${ig:abbreviateString(entry.value.nameCourse, 60)}" />

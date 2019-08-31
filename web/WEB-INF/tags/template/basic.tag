@@ -12,8 +12,8 @@
     </jsp:attribute>
 
     <jsp:attribute name="navigationContent">
-        <a href="<c:url value="${pageContext.request.contextPath}/courses/${pageContext.session.getAttribute(username)}" />">List Course</a><br />
-        <a href="<c:url value="${pageContext.request.contextPath}/courses/${pageContext.session.getAttribute(username)}">
+        <a href="<c:url value="/courses/${loginedUser.userName}" />">List Course</a><br />
+        <a href="<c:url value="/courses/${loginedUser.userName}">
                 <c:param name="action" value="create" />
                 </c:url>">Create a Course</a><br />
         <a href="<c:url value="/sessions" />">List Sessions</a><br />
