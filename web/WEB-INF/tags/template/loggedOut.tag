@@ -9,16 +9,7 @@
         <jsp:invoke fragment="extraHeadContent" />
         <link rel="stylesheet" href="<c:url value="/resourse/stylesheet/login.css" />" />
     </jsp:attribute>
-
-    <jsp:attribute name="navigationContent">
-        <a href="<c:url value="courses" />">List Course</a><br />
-        <a href="<c:url value="courses">
-                <c:param name="action" value="create" />
-                </c:url>">Create a Course</a><br />
-        <a href="<c:url value="/sessions" />">List Sessions</a><br />
-        <a href="<c:url value="/login?logout" />">Log Out</a><br />
-    </jsp:attribute>
-
+    <jsp:attribute name="navigationContent" />
     <jsp:body>
         <jsp:doBody/>
     </jsp:body>

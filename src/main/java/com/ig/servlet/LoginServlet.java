@@ -66,6 +66,7 @@ public class LoginServlet extends HttpServlet {
             log.info("log:: put UserAccount ---> AppUtils.storeLoginedUser()");
             if(username.equals(DBdao.get_MAP_User_Database().get(username).getUserName())) {
                 AppUtils.storeLoginedUser(session, DBdao.get_MAP_User_Database().get(username));
+//                request.changeSessionId();
             }
         }
 //        if(uid.equals("") || username.equals("") || password.equals("")) {
@@ -114,7 +115,7 @@ public class LoginServlet extends HttpServlet {
             response.sendRedirect(requestUri);
         }
         else {
-            log.info("log:: sendRedirect(username)");
+            log.info("log:: sendRedirect(courses + username)");
             response.sendRedirect(request.getContextPath() + "/courses/" + username);
         }
     }

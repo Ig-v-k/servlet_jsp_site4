@@ -17,8 +17,8 @@
                 </c:url>"><c:out value="${course.studentName}" /></a>--%>
         </c:forEach><br /><br />
     </c:if>
-    <a href="<c:url value="${pageContext.request.contextPath}/course/${pageContext.session.getAttribute(username)}">
+    <a href="<c:url value="/course/${loginedUser.userName}">
                 <c:param name="action" value="addStudent"/>
                 <c:param name="courseId" value="${courseId}"/>
-                </c:url>">Add student</a>
+             </c:url>">Add student</a>
 </template:basic>

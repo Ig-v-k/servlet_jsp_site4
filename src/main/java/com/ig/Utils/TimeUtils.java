@@ -1,4 +1,4 @@
-package com.ig.model;
+package com.ig.Utils;
 
 public final class TimeUtils {
     public static String intervalToString(long timeInterval) {

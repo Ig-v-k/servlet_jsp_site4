@@ -135,7 +135,7 @@
             second" or "ten seconds" or "about 12 minutes".
         </description>
         <name>timeIntervalToString</name>
-        <function-class>com.ig.model.TimeUtils</function-class>
+        <function-class>com.ig.Utils.TimeUtils</function-class>
         <function-signature>
             java.lang.String intervalToString(long)
         </function-signature>

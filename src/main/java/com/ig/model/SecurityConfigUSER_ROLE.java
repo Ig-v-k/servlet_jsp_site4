@@ -6,33 +6,35 @@ public class SecurityConfigUSER_ROLE {
     public static final String SECURITY_ROLE_USER_STUDENT = "STUDENT";
     public static final String SECURITY_ROLE_USER_EMPLOYEE = "EMPLOYEE";
     public static final String SECURITY_ROLE_USER_MANAGER = "MANAGER";
-
     private static final Map<String, List<String>> mapConfig = new HashMap<String, List<String>>();
+
     static {
         init();
     }
     private static void init() {
         // Configuration for: STUDENT
-        List<String> urlPatterns1 = new ArrayList<String>();
+        List<String> student = new ArrayList<String>();
         // Configuration for: EMPLOYEE
-        List<String> urlPatterns2 = new ArrayList<String>();
+        List<String> employee = new ArrayList<String>();
         // Configuration for: MANAGER
-        List<String> urlPatterns3 = new ArrayList<String>();
+        List<String> manager = new ArrayList<String>();
 
-        urlPatterns1.add("/student");
-        urlPatterns1.add("/login");
+        student.add("/student");
+        student.add("/login");
 
-        urlPatterns2.add("/employee");
-        urlPatterns2.add("/session");
-        urlPatterns2.add("/login");
+        employee.add("/employee");
+        employee.add("/session");
+        employee.add("/login");
+        employee.add("/chat");
 
-        urlPatterns3.add("/manager");
-        urlPatterns3.add("/session");
-        urlPatterns3.add("/login");
+        manager.add("/manager");
+        manager.add("/session");
+        manager.add("/login");
+        manager.add("/chat");
 
-        mapConfig.put(SECURITY_ROLE_USER_STUDENT, urlPatterns1);
-        mapConfig.put(SECURITY_ROLE_USER_EMPLOYEE, urlPatterns2);
-        mapConfig.put(SECURITY_ROLE_USER_MANAGER, urlPatterns3);
+        mapConfig.put(SECURITY_ROLE_USER_STUDENT, student);
+        mapConfig.put(SECURITY_ROLE_USER_EMPLOYEE, employee);
+        mapConfig.put(SECURITY_ROLE_USER_MANAGER, manager);
     }
     public static Set<String> getAllAppRoles() {
         return mapConfig.keySet();

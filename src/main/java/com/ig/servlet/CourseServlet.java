@@ -1,6 +1,5 @@
 package com.ig.servlet;
 
-import com.ig.Utils.SwitchCheck;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

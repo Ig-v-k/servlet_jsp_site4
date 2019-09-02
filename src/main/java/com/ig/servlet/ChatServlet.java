@@ -1,5 +1,6 @@
 package com.ig.servlet;
 
+import com.ig.Utils.AppUtils;
 import com.ig.chat.ChatEndpoint;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet(
@@ -21,6 +23,8 @@ public class ChatServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("log:: --- doGet() ---");
+        HttpSession session = request.getSession();
         String action = request.getParameter("action");
         if("list".equals(action)) {
             log.debug("Listing pending support chats.");
@@ -29,11 +33,13 @@ public class ChatServlet extends HttpServlet {
         }
         else {
             log.info("Rejected chat servlet GET request with invalid action [{}].", action);
-            response.sendRedirect("courses");
+            response.sendRedirect("courses" + AppUtils.getLoginedUser(session).getUserName());
         }
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.info("log:: --- doPost() ---");
+        HttpSession session = request.getSession();
         response.setHeader("Expires", "Thu, 1 Jan 1970 12:00:00 GMT");
         response.setHeader("Cache-Control","max-age=0, must-revalidate, no-cache");
         String action = request.getParameter("action");
@@ -55,7 +61,7 @@ public class ChatServlet extends HttpServlet {
                 }
                 break;
             default:
-                response.sendRedirect("courses");
+                response.sendRedirect("courses" + AppUtils.getLoginedUser(session).getUserName());
                 break;
         }
         if(view != null)

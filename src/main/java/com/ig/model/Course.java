@@ -2,6 +2,7 @@ package com.ig.model;
 
 import sun.security.jca.GetInstance;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,7 +11,7 @@ public class Course {
     private String userName = null;
     private String name = null;
     private Professor professor = new Professor();
-    private GetInstance.Instance dateFormat;
+    private Instant dateFormat;
     private Map<String, Student> students = new LinkedHashMap<>();
 
     public boolean isTrueName(String a) {
@@ -55,11 +56,11 @@ public class Course {
         this.userName = userName;
     }
 
-    public GetInstance.Instance getDateFormat() {
+    public Instant getDateFormat() {
         return dateFormat;
     }
 
-    public void setDateFormat(GetInstance.Instance dateFormat) {
+    public void setDateFormat(Instant dateFormat) {
         this.dateFormat = dateFormat;
     }
 

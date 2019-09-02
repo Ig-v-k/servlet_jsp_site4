@@ -1,4 +1,4 @@
-package com.ig.Utils;
+package com.ig.servlet;
 
 import com.ig.Interface.Implements.EmployeeImpl;
 import com.ig.Interface.Implements.ManagerImpl;

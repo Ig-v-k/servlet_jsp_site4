@@ -11,16 +11,13 @@
                 Course ${entry.key}: <a href="<c:url value="/course/${loginedUser.userName}">
                                                 <c:param name="action" value="view" />
                                                 <c:param name="courseId" value="${entry.key}" />
-                                              </c:url>"><c:out value="${ig:abbreviateString(entry.value.nameCourse, 60)}" />
-                                     </a><br/>
-                <c:out value="${entry.value.userName}" />- created course
+                                              </c:url>"><c:out value="${ig:abbreviateString(entry.value.nameCourse, 60)}" /></a><br/>
+                <c:out value="${entry.value.userName}" /> - created course
                 <ig:formatDate value="${entry.value.dateFormat}" type="both" timeStyle="short" dateStyle="medium" /><br/>
-                <a href="<c:url value="${pageContext.request.contextPath}/course/${pageContext.session.getAttribute(username)}">
+                <a href="<c:url value="/course/${loginedUser.userName}">
                             <c:param name="action" value="deleteCourse"/>
                             <c:param name="courseId" value="${entry.key}"/>
-                         </c:url>">
-                         Remove
-                </a><br/><br/><br/>
+                         </c:url>">Remove</a><br/><br/><br/>
             </c:forEach>
         </c:otherwise>
     </c:choose>
