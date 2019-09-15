@@ -1,8 +1,8 @@
 package com.ig.servlet;
 
-import com.ig.Interface.Implements.EmployeeImpl;
-import com.ig.Interface.Implements.ManagerImpl;
-import com.ig.Interface.Implements.StudentImpl;
+import com.ig.interfaceFunctions_for_roles.Implements.EmployeeImpl;
+import com.ig.interfaceFunctions_for_roles.Implements.ManagerImpl;
+import com.ig.interfaceFunctions_for_roles.Implements.StudentImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

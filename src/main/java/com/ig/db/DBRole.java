@@ -1,4 +1,4 @@
-package com.ig.DB;
+package com.ig.db;
 
 import com.ig.model.SecurityConfigUSER_ROLE;
 import com.ig.model.UserAccount;
@@ -6,7 +6,7 @@ import com.ig.model.UserAccount;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class DBdao {
+public class DBRole {
     private static final Map<String, UserAccount> user_RoleDatabase = new LinkedHashMap<String, UserAccount>();
 
     static {
@@ -19,13 +19,6 @@ public class DBdao {
         user_RoleDatabase.put(s.getUserName(), s);
         user_RoleDatabase.put(e.getUserName(), e);
         user_RoleDatabase.put(m.getUserName(), m);
-    }
-    public static UserAccount findUser(String userName, String password, int uid) {
-        UserAccount u = user_RoleDatabase.get(userName);
-        if (u != null && u.getPassword().equals(password) && u.getUid() == uid) {
-            return u;
-        }
-        return null;
     }
     public static Map<String, UserAccount> get_MAP_User_Database() {
         return user_RoleDatabase;

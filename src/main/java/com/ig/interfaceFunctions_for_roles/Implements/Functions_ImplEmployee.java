@@ -1,6 +1,6 @@
-package com.ig.Interface.Implements;
+package com.ig.interfaceFunctions_for_roles.Implements;
 
-import com.ig.Interface.IFunctions_forEmployee;
+import com.ig.interfaceFunctions_for_roles.IFunctions_forEmployee;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package com.ig.Utils;
+package com.ig.utils;
 
 import com.ig.model.UserAccount;
 

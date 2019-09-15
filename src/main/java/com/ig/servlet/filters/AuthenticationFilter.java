@@ -1,9 +1,9 @@
 package com.ig.servlet.filters;
 
 import com.ig.model.UserAccount;
-import com.ig.Utils.AppUtils;
-import com.ig.Utils.CheckROLE_URL;
-import com.ig.Utils.UserRoleRequestWrapper;
+import com.ig.utils.AppUtils;
+import com.ig.utils.CheckROLE_URL;
+import com.ig.utils.UserRoleRequestWrapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

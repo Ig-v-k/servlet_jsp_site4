@@ -1,6 +1,6 @@
-package com.ig.Interface.Implements;
+package com.ig.interfaceFunctions_for_roles.Implements;
 
-import com.ig.DB.DBCourse;
+import com.ig.db.DBCourse;
 import com.ig.model.Course;
 import com.ig.model.Student;
 import org.apache.logging.log4j.LogManager;
@@ -11,12 +11,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class EmployeeImpl extends Functions_ImplEmployee {
+public class ManagerImpl extends Functions_ImplManager {
     private static final Logger log = LogManager.getLogger();
     private Integer i = 1;
     private volatile int COURSE_ID_SEQUENCE = 1;
     private String localId;
 
+    @Override
+    public void deleteCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DBCourse.getCourseDatabase().remove(Integer.parseInt(request.getParameter("courseId")));
+        response.sendRedirect("courses?action=view&courseId" + request.getParameter("courseId"));
+    }
     @Override
     public void addStudentForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Course course = DBCourse.getcourseOfMap(localId, response);
@@ -52,6 +57,25 @@ public class EmployeeImpl extends Functions_ImplEmployee {
         log.exit();
     }
     @Override
+    public void createCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.entry();
+        Course course = new Course();
+        course.setUserName((String)request.getSession().getAttribute("username"));
+        Student student = new Student(request.getParameter("student"));
+        course.setName(request.getParameter("courseName"));
+        course.setProfessorName(request.getParameter("professor"));
+        if(!(student.getName().equals(""))) { // <--- NPE <--- courseForm.jsp - courseName(customerName):11 // <--- NPE
+            course.addStudentToCourse(student);
+        }
+        int id;
+        synchronized(this) {
+            id = this.COURSE_ID_SEQUENCE++;
+            DBCourse.getCourseDatabase().put(id, course);
+        }
+        response.sendRedirect("courses?action=view&courseId=" + id);
+        log.exit();
+    }
+    @Override
     public void addStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int ii = this.i;
         log.debug("-- start debug --");
@@ -70,7 +94,7 @@ public class EmployeeImpl extends Functions_ImplEmployee {
     }
     @Override
     public void listCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("log:: --- employee:listCourse() ---");
+        log.info("log:: --- manager:listCourse() ---");
         log.debug("List courses.");
         request.setAttribute("courseDatabase", DBCourse.getCourseDatabase());
         request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);

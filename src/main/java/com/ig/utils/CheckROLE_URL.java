@@ -1,6 +1,5 @@
-package com.ig.Utils;
+package com.ig.utils;
 
-import com.ig.Utils.UrlPatternUtils;
 import com.ig.model.SecurityConfigUSER_ROLE;
 
 import javax.servlet.http.HttpServletRequest;

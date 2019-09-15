@@ -1,6 +1,6 @@
-package com.ig.Interface.Implements;
+package com.ig.interfaceFunctions_for_roles.Implements;
 
-import com.ig.DB.DBCourse;
+import com.ig.db.DBCourse;
 import com.ig.model.Course;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

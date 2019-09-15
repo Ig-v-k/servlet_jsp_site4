@@ -1,4 +1,4 @@
-package com.ig.Utils;
+package com.ig.utils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;

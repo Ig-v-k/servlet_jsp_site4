@@ -1,6 +1,6 @@
 package com.ig.servlet;
 
-import com.ig.Utils.AppUtils;
+import com.ig.utils.AppUtils;
 import com.ig.chat.ChatEndpoint;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.apache.logging.log4j.LogManager;
