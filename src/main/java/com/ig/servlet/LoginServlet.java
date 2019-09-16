@@ -1,6 +1,7 @@
 package com.ig.servlet;
 
-import com.ig.db.DBdao;
+import com.ig.dao.implementations.DAO_for_Course_Impl;
+import com.ig.dao.implementations.DAO_for_User_Impl;
 import com.ig.utils.AppUtils;
 import com.ig.model.UserAccount;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +22,8 @@ import java.io.IOException;
 )
 public class LoginServlet extends HttpServlet {
     private static final Logger log = LogManager.getLogger();
+    private DAO_for_Course_Impl dao_for_course_;
+    private DAO_for_User_Impl dao_for_user_;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
@@ -41,7 +44,7 @@ public class LoginServlet extends HttpServlet {
         }
         request.setAttribute("loginFailed", false);
         request.setAttribute("uidloginFailed", false);
-        request.setAttribute("db", DBdao.get_MAP_User_Database());
+        request.setAttribute("db", this.dao_for_course_.getAllDB());
         log.info("log:: request.getRequestDispatcher(.../login.jsp)");
         request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
     }
@@ -54,18 +57,18 @@ public class LoginServlet extends HttpServlet {
         log.info("request.getParameter(\"username\") ---> " + request.getParameter("username"));
         log.info("request.getParameter(\"password\") ---> " + request.getParameter("password"));
         log.info("request.getParameter(\"uid\") ---> " + request.getParameter("uid"));
-        UserAccount user = DBdao.findUser(username, password, Integer.parseInt(uid));
+        UserAccount user = this.dao_for_user_.getUser(username, password, Integer.parseInt(uid));
         if (user == null) {
             request.setAttribute("loginFailedEmpty", true);
-            request.setAttribute("db", DBdao.get_MAP_User_Database());
+            request.setAttribute("db", this.dao_for_course_.getAllDB());
             log.info("log:: doPost() --- request.getRequestDispatcher(.../login.jsp)");
             request.getRequestDispatcher("/WEB-INF/jsp/view/login.jsp").forward(request, response);
             return;
         }
         else {
             log.info("log:: put UserAccount ---> AppUtils.storeLoginedUser()");
-            if(username.equals(DBdao.get_MAP_User_Database().get(username).getUserName())) {
-                AppUtils.storeLoginedUser(session, DBdao.get_MAP_User_Database().get(username));
+            if(username.equals(this.dao_for_user_.getAllDB().get(username).getUserName())) {
+                AppUtils.storeLoginedUser(session, this.dao_for_user_.getAllDB().get(username));
 //                request.changeSessionId();
             }
         }

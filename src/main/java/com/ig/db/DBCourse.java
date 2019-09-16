@@ -10,9 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DBCourse {
-    private static Map<Integer, Course> courseDatabase = new LinkedHashMap<>();
+    private static Map<Integer, Course> course_Database = new LinkedHashMap<>();
 
     public static Map<Integer, Course> getCourseDatabase() {
-        return courseDatabase;
+        return course_Database;
     }
 }

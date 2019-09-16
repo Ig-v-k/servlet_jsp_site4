@@ -1,5 +1,6 @@
 package com.ig.interfaceFunctions_for_roles.Implements;
 
+import com.ig.dao.implementations.DAO_for_Course_Impl;
 import com.ig.db.DBCourse;
 import com.ig.model.Course;
 import com.ig.model.Student;
@@ -16,10 +17,12 @@ public class EmployeeImpl extends Functions_ImplEmployee {
     private Integer i = 1;
     private volatile int COURSE_ID_SEQUENCE = 1;
     private String localId;
+    ManagerImpl manager;
+    DAO_for_Course_Impl dao_for_course_;
 
     @Override
     public void addStudentForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Course course = DBCourse.getcourseOfMap(localId, response);
+        Course course = dao_for_course_.getCourse(localId, response);
         request.setAttribute("courseId", localId);
         request.setAttribute("course", course);
         request.setAttribute("courseDatabase", DBCourse.getCourseDatabase());
@@ -31,42 +34,11 @@ public class EmployeeImpl extends Functions_ImplEmployee {
     }
     @Override
     public void downloadStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idString = request.getParameter("courseId");
-        log.entry(idString);
-        Course course = DBCourse.getcourseOfMap(idString, response);
-        if(course == null)
-            return;
-        String name = request.getParameter("student");
-        if(name == null) {
-            response.sendRedirect("courses?action=view&courseId=" + idString);
-            return;
-        }
-        Student Student = course.getStudent(name);
-        if(Student == null) {
-            log.info("Requested student {} not found on course {}.", name, idString);
-            response.sendRedirect("courses?action=view&courseId=" + idString);
-            return;
-        }
-        response.setHeader("Content-Disposition", "Student; filename=" + Student.getName());
-        response.setContentType("application/octet-stream");
-        log.exit();
+        manager.downloadStudent(request, response);
     }
     @Override
     public void addStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int ii = this.i;
-        log.debug("-- start debug --");
-        log.info("---: " + ii++ + " :---");
-        log.info("studname ---> " + request.getParameter("studname"));
-        String studname = request.getParameter("studname");
-        log.info("isTrueName --> " + DBCourse.getCourseDatabase().get(Integer.parseInt(localId)).isTrueName(studname));
-        if(DBCourse.getCourseDatabase().get(Integer.parseInt(localId)).isTrueName(studname)) {
-            request.setAttribute("nameFailed", true);
-            addStudentForm(request, response);
-        }
-        Student student = new Student(studname);
-        DBCourse.getCourseDatabase().get(Integer.parseInt(localId)).addStudentToCourse(student);
-        response.sendRedirect("courses?action=view&courseId=" + localId);
-        request.getRequestDispatcher("/WEB-INF/jsp/view/listCourse.jsp").forward(request, response);
+        manager.addStudent(request, response);
     }
     @Override
     public void listCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -78,15 +50,7 @@ public class EmployeeImpl extends Functions_ImplEmployee {
     }
     @Override
     public void viewCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idString = request.getParameter("courseId");
-        log.entry(idString);
-        Course course = DBCourse.getCourseDatabase().get(Integer.parseInt(idString));
-        if(course == null)
-            return;
-        request.setAttribute("courseId", idString);
-        request.setAttribute("course", course);
-        request.getRequestDispatcher("/WEB-INF/jsp/view/viewCourse.jsp").forward(request, response);
-        log.exit();
+        manager.viewCourse(request, response);
     }
     public void setLocalId(String localId) {
         this.localId = localId;

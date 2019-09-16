@@ -1,5 +1,6 @@
 package com.ig.interfaceFunctions_for_roles.Implements;
 
+import com.ig.dao.implementations.DAO_for_Course_Impl;
 import com.ig.db.DBCourse;
 import com.ig.model.Course;
 import com.ig.model.Student;
@@ -16,6 +17,7 @@ public class ManagerImpl extends Functions_ImplManager {
     private Integer i = 1;
     private volatile int COURSE_ID_SEQUENCE = 1;
     private String localId;
+    DAO_for_Course_Impl dao_for_course_;
 
     @Override
     public void deleteCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -24,7 +26,7 @@ public class ManagerImpl extends Functions_ImplManager {
     }
     @Override
     public void addStudentForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Course course = DBCourse.getcourseOfMap(localId, response);
+        Course course = dao_for_course_.getCourse(localId, response);
         request.setAttribute("courseId", localId);
         request.setAttribute("course", course);
         request.setAttribute("courseDatabase", DBCourse.getCourseDatabase());
@@ -38,7 +40,7 @@ public class ManagerImpl extends Functions_ImplManager {
     public void downloadStudent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String idString = request.getParameter("courseId");
         log.entry(idString);
-        Course course = DBCourse.getcourseOfMap(idString, response);
+        Course course = dao_for_course_.getCourse(idString, response);
         if(course == null)
             return;
         String name = request.getParameter("student");

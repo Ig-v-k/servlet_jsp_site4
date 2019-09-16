@@ -13,6 +13,7 @@ import java.io.IOException;
 
 public class StudentImpl extends Functions_ImplStudent{
     private static final Logger log = LogManager.getLogger();
+    EmployeeImpl employee;
 
     @Override
     public void listCourse(HttpSession session , HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,14 +26,6 @@ public class StudentImpl extends Functions_ImplStudent{
     }
     @Override
     public void viewCourse(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String idString = request.getParameter("courseId");
-        log.entry(idString);
-        Course course = DBCourse.getCourseDatabase().get(Integer.parseInt(idString));
-        if(course == null)
-            return;
-        request.setAttribute("courseId", idString);
-        request.setAttribute("course", course);
-        request.getRequestDispatcher("/WEB-INF/jsp/view/viewCourse.jsp").forward(request, response);
-        log.exit();
+        employee.viewCourse(request, response);
     }
 }

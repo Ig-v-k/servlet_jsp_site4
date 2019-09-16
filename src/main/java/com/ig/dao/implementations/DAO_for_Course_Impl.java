@@ -16,12 +16,17 @@ public class DAO_for_Course_Impl extends RealiseDAO_COURSE {
     private HttpServletRequest req;
     private HttpServletResponse res;
 
+    DAO_for_Course_Impl(){};
     DAO_for_Course_Impl(HttpServletRequest request, HttpServletResponse response) {
         this.req = request;
         this.res = response;
     }
     private static Map<Integer, Course> getCourseDatabase() {
         return DBCourse.getCourseDatabase();
+    }
+    @Override
+    public Map<Integer, Course> getAllDB() {
+        return getCourseDatabase();
     }
     @Override
     public Course getCourse(String idString) {

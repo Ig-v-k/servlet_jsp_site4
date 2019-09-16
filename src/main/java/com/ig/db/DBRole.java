@@ -20,7 +20,7 @@ public class DBRole {
         user_RoleDatabase.put(e.getUserName(), e);
         user_RoleDatabase.put(m.getUserName(), m);
     }
-    public static Map<String, UserAccount> get_MAP_User_Database() {
+    public static Map<String, UserAccount> getUserDatabase() {
         return user_RoleDatabase;
     }
 }
